@@ -1,6 +1,4 @@
 from src.application.services.employee.employee_validations import EmployeeValidation
-from src.domain.exceptions.domain_exceptions import EmployeeException
-from src.domain.exceptions.infrastructure_exceptions import  DatabaseException
 from src.domain.models.employee import Employee
 from src.domain.ports.inbounds.employee_service_port import EmployeeServicePort
 from src.domain.ports.outbounds.unit_of_work_port import UnitOfWorkPort

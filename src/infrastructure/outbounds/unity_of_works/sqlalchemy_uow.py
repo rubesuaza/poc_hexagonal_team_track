@@ -1,7 +1,7 @@
 from sqlalchemy.exc import IntegrityError, OperationalError
 from sqlalchemy.orm import Session
 
-from src.domain.exceptions.infrastructure_exceptions import DatabaseException
+from src.infrastructure.exceptions.infrastructure_exceptions import DatabaseException
 from src.domain.ports.outbounds.unit_of_work_port import UnitOfWorkPort
 from src.infrastructure.config.db.connection import get_session_factory  # Tu factory actual
 from src.infrastructure.outbounds.repositories.employee.employee_repository_adapter import EmployeeRepositoryAdapter

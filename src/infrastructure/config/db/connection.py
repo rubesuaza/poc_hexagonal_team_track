@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 from sqlalchemy import create_engine
 from sqlalchemy.engine import Engine
 from sqlalchemy.orm import sessionmaker
-from src.domain.exceptions.infrastructure_exceptions import DatabaseException
+from src.infrastructure.exceptions.infrastructure_exceptions import DatabaseException
 
 load_dotenv()
 
