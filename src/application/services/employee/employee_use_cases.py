@@ -13,12 +13,8 @@ class EmployeeService(EmployeeServicePort):
 
     def create_employee(self,employee:Employee) :
         with self.uow as uow_context:
-            try:
-                EmployeeValidation.validate_employee_is_active(
-                    uow_context.employee_repository, employee.employee_id)
-            except EmployeeException as e:
-                raise e
-            except DatabaseException as e:
-                raise e
+            EmployeeValidation.validate_employee_is_active(
+                uow_context.employee_repository, employee.employee_id)
+
 
 
