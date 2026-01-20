@@ -11,7 +11,7 @@ class EmployeeService(EmployeeServicePort):
     def __init__(self, uow:UnitOfWorkPort):
         self.uow = uow
 
-    def create_employee(self,employee:Employee) -> Employee:
+    def create_employee(self,employee:Employee) :
         with self.uow as uow_context:
             try:
                 EmployeeValidation.validate_employee_is_active(
@@ -20,5 +20,5 @@ class EmployeeService(EmployeeServicePort):
                 raise EmployeeException(str(e))
             except Exception as e:
                 raise InfrastructureException(f'error in infrastructure - Error: {e}')
-            return employee
+
 

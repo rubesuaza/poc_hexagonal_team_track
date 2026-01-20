@@ -1,14 +1,10 @@
 import os
 import logging
 import sys
-from pathlib import Path
 from dotenv import load_dotenv
 from sqlalchemy import create_engine
 from sqlalchemy.engine import Engine
-from sqlalchemy.orm import sessionmaker, Session
-from contextlib import contextmanager
-from collections.abc import Generator
-
+from sqlalchemy.orm import sessionmaker
 from src.domain.exceptions.infrastructure_exceptions import DatabaseException
 
 load_dotenv()
@@ -81,23 +77,3 @@ def get_session_factory():
             bind=get_engine()
         )
     return _SessionLocal
-
-
-@contextmanager
-def get_db_session() -> Generator[Session, None, None]:
-    """
-    Session Provider. Provides a session and
-    ensures it is closed properly.
-    """
-    SessionLocal = get_session_factory()
-    session = SessionLocal()
-    logger.info("Starting new DB session")
-    try:
-        yield session
-    except Exception:
-        logger.error("Error in DB session, performing rollback...")
-        session.rollback()
-        raise DatabaseException("Error in DB session, performing rollback...")
-    finally:
-        logger.info("Closing DB session")
-        session.close()

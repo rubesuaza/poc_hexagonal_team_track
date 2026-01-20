@@ -6,6 +6,7 @@ from pydantic import BaseModel, Field
 
 T = TypeVar("T")
 
+
 class Header(BaseModel):
     transaction_uuid: str = Field(default_factory=lambda: str(uuid.uuid4()))
     timestamp: datetime = Field(default_factory=datetime.now)

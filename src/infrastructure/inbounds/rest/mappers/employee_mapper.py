@@ -18,15 +18,3 @@ class EmployeeMapper:
             new_profile_type=request.new_profile_type
         )
 
-    @staticmethod
-    def to_request(entity: Employee) -> EmployeeCreateRequest:
-        return EmployeeCreateRequest(
-            employee_id=entity.employee_id,
-            absence_type_id=entity.absence_type_id,
-            is_reportable=entity.is_reportable,
-            comments=entity.comments,
-            start_date=entity.start_date,
-            end_date=entity.end_date,
-            hours=entity.hours,
-            new_profile_type=entity.new_profile_type
-        )

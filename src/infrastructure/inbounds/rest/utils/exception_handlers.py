@@ -14,4 +14,5 @@ async def employee_exception_handler(request: Request, exc: EmployeeException):
 async def infrastructure_exception_handler(request: Request, exc: InfrastructureException):
     return JSONResponse(
         status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+        content=Response.failure(message=exc.message).model_dump(mode='json')
     )

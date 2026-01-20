@@ -15,14 +15,15 @@ router = APIRouter()
 
 @router.post(
     "/employee_timeoff/",
-    response_model=Response[EmployeeCreateRequest],
+    response_model=Response[str],
     status_code=201,
     summary="Record employee timeoff",
     description="Record employee timeoff",
     )
 async def api_record_employee_timeoff(employee_timeoff: EmployeeCreateRequest,
                                       service:EmployeeServicePort = Depends(get_employee_service_port)):
+    service.create_employee(
+        EmployeeMapper.to_domain(employee_timeoff))
     return Response.success(
-        data=EmployeeMapper.to_request(service.create_employee(
-            EmployeeMapper.to_domain(employee_timeoff))),
+        data='record employee timeoff successfully',
         service_name="Employee Timeoff Recorder")

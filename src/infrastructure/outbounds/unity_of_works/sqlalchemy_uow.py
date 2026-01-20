@@ -1,4 +1,7 @@
+from sqlalchemy.exc import IntegrityError, OperationalError
 from sqlalchemy.orm import Session
+
+from src.domain.exceptions.infrastructure_exceptions import DatabaseException
 from src.domain.ports.outbounds.unit_of_work_port import UnitOfWorkPort
 from src.infrastructure.config.db.connection import get_session_factory  # Tu factory actual
 from src.infrastructure.outbounds.repositories.employee.employee_repository_adapter import EmployeeRepositoryAdapter
@@ -26,7 +29,13 @@ class SqlAlchemyUnitOfWork(UnitOfWorkPort):
             self.session.close()
 
     def commit(self):
-        self.session.commit()
+        try:
+            self.session.commit()
+        except IntegrityError | OperationalError as e:
+            raise DatabaseException('error committing the transaction to the database') from e
 
     def rollback(self):
-        self.session.rollback()
+        try:
+            self.session.rollback()
+        except IntegrityError | OperationalError as e:
+            raise DatabaseException('error doing rollback the transaction to the database') from e
