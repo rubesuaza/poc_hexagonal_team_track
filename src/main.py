@@ -1,8 +1,10 @@
 from fastapi import FastAPI
 
 from src.domain.exceptions.domain_exceptions import EmployeeException
+from src.domain.exceptions.infrastructure_exceptions import InfrastructureException
 from src.infrastructure.inbounds.rest.controllers.employee import employee_recorder_controller
-from src.infrastructure.inbounds.rest.utils.exception_handlers import employee_exception_handler
+from src.infrastructure.inbounds.rest.utils.exception_handlers import employee_exception_handler, \
+    infrastructure_exception_handler
 
 app = FastAPI(
     title="Employee Service API",
@@ -12,6 +14,7 @@ app = FastAPI(
 
 
 app.add_exception_handler(EmployeeException, employee_exception_handler)
+app.add_exception_handler(InfrastructureException, infrastructure_exception_handler)
 
 app.include_router(
     employee_recorder_controller.router,

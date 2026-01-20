@@ -1,11 +1,12 @@
+from dataclasses import dataclass
 from datetime import date
 from decimal import Decimal
 from typing import Optional
 
-from pydantic import BaseModel
 
 
-class Employee(BaseModel):
+@dataclass
+class Employee:
     employee_id: int
     absence_type_id: int
     is_reportable: Optional[bool]

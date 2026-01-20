@@ -9,7 +9,7 @@ from sqlalchemy.orm import sessionmaker, Session
 from contextlib import contextmanager
 from collections.abc import Generator
 
-
+from src.domain.exceptions.infrastructure_exceptions import DatabaseException
 
 load_dotenv()
 
@@ -61,7 +61,8 @@ def get_engine() -> Engine:
         return global_engine
     except Exception as e:
         logger.error(f"Error creating the SQLAlchemy engine: {e}")
-        sys.exit(1)
+        raise DatabaseException(f"Error creating the SQLAlchemy engine: {e}")
+
 
 
 
@@ -96,7 +97,7 @@ def get_db_session() -> Generator[Session, None, None]:
     except Exception:
         logger.error("Error in DB session, performing rollback...")
         session.rollback()
-        raise
+        raise DatabaseException("Error in DB session, performing rollback...")
     finally:
         logger.info("Closing DB session")
         session.close()
