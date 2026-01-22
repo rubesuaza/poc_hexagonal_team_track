@@ -2,7 +2,7 @@ from typing import Callable, Any
 
 from sqlalchemy.exc import IntegrityError, OperationalError
 
-from src.domain.exceptions.infrastructure_exceptions import PersistenceException
+from src.domain.exceptions.operation_exceptions import  PersistenceException
 from src.domain.ports.outbounds.database_provider_port import DatabaseProviderPort
 from src.domain.ports.outbounds.unit_of_work_port import UnitOfWorkPort
 

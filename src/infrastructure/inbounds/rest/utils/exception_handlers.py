@@ -1,7 +1,7 @@
 from fastapi import Request, status
 from fastapi.responses import JSONResponse
 from src.domain.exceptions.domain_exceptions import EmployeeException
-from src.domain.exceptions.infrastructure_exceptions import  ValidationException, \
+from src.domain.exceptions.operation_exceptions import  ValidationException, \
     EmployeeOperationException
 from src.infrastructure.inbounds.rest.dtos.response import Response
 
@@ -22,4 +22,10 @@ async def employee_operation_exception_handler(request: Request, exc: EmployeeOp
     return JSONResponse(
         status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
         content=Response.failure(message=exc.message).model_dump(mode='json')
+    )
+
+async def unnamed_exception_handler(request: Request, exc: Exception):
+    return JSONResponse(
+        status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+        content=Response.failure(message='internal error').model_dump(mode='json')
     )

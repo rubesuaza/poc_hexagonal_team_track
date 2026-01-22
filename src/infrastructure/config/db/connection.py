@@ -8,7 +8,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.engine import Engine
 from sqlalchemy.orm import sessionmaker, scoped_session
 
-from src.domain.exceptions.infrastructure_exceptions import PersistenceException
+from src.domain.exceptions.operation_exceptions import  PersistenceException
 from src.domain.ports.outbounds.database_provider_port import DatabaseProviderPort
 
 

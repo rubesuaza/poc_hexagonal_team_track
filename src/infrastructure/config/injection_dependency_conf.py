@@ -1,7 +1,7 @@
 from fastapi import Depends
 
 from src.application.services.employee.employee_use_cases import EmployeeService
-from src.domain.exceptions.infrastructure_exceptions import  PersistenceException
+from src.domain.exceptions.operation_exceptions import   PersistenceException
 from src.domain.ports.inbounds.employee_service_port import EmployeeServicePort
 from src.domain.ports.outbounds.unit_of_work_port import UnitOfWorkPort
 from src.infrastructure.config.db.connection import db_provider
