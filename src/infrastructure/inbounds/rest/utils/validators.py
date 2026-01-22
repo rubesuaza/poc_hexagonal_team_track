@@ -1,7 +1,7 @@
 from datetime import date, datetime
 from typing import Any
 
-from src.infrastructure.exceptions.infrastructure_exceptions import ValidationException
+from src.domain.exceptions.infrastructure_exceptions import ValidationException
 
 
 def validate_max_length_60(v: str | None) -> str | None:

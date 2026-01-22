@@ -1,21 +1,26 @@
-from sqlalchemy.exc import IntegrityError, OperationalError
-from sqlalchemy.orm import Session
+from typing import Callable, Any
 
-from src.infrastructure.exceptions.infrastructure_exceptions import DatabaseException
+from sqlalchemy.exc import IntegrityError, OperationalError
+
+from src.domain.exceptions.infrastructure_exceptions import PersistenceException
+from src.domain.ports.outbounds.database_provider_port import DatabaseProviderPort
 from src.domain.ports.outbounds.unit_of_work_port import UnitOfWorkPort
-from src.infrastructure.config.db.connection import get_session_factory  # Tu factory actual
-from src.infrastructure.outbounds.repositories.employee.employee_repository_adapter import EmployeeRepositoryAdapter
+
 
 
 class SqlAlchemyUnitOfWork(UnitOfWorkPort):
-    def __init__(self, session_factory=None):
-        self.session_factory = session_factory or get_session_factory()
+    def __init__(self,
+                 db_provider:DatabaseProviderPort,
+                 repository_factory:Callable[[Any],Any]):
+        self.db_provider = db_provider
+        self.repository_factory = repository_factory
+        self.session=None
 
     def __enter__(self):
 
-        self.session: Session = self.session_factory()
+        self.session = self.db_provider.get_session()
 
-        self.employee_repository = EmployeeRepositoryAdapter(self.session)
+        self.employee_repository = self.repository_factory(self.session)
 
         return self
 
@@ -24,7 +29,7 @@ class SqlAlchemyUnitOfWork(UnitOfWorkPort):
             if exc_type:
                 self.rollback()
             else:
-                self.commit()  # Opcional: Auto-commit al salir exitoso
+                self.commit()
         finally:
             self.session.close()
 
@@ -32,10 +37,10 @@ class SqlAlchemyUnitOfWork(UnitOfWorkPort):
         try:
             self.session.commit()
         except IntegrityError | OperationalError as e:
-            raise DatabaseException('error committing the transaction to the database') from e
+            raise PersistenceException('error committing the transaction to the database') from e
 
     def rollback(self):
         try:
             self.session.rollback()
         except IntegrityError | OperationalError as e:
-            raise DatabaseException('error doing rollback the transaction to the database') from e
+            raise PersistenceException('error doing rollback the transaction to the database') from e
